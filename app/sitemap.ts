@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { casinos } from "./data/casinos";
+import { blogArticles } from "./data/articles";
 
 export const dynamic = "force-static";
 
@@ -21,6 +22,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.9,
     },
+    {
+      url: `${BASE_URL}/blog`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
   ];
 
   const casinoPages: MetadataRoute.Sitemap = casinos.map((c) => ({
@@ -30,5 +37,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...casinoPages];
+  const blogPages: MetadataRoute.Sitemap = blogArticles.map((a) => ({
+    url: `${BASE_URL}/blog/${a.slug}`,
+    lastModified: new Date(a.date),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...casinoPages, ...blogPages];
 }
